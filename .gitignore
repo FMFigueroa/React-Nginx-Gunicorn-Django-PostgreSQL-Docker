@@ -1,0 +1,28 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+django/venv
+react/blogapi/node_modules
+react/blogapi/.pnp
+react/blogapi/.pnp.js
+
+# testing
+react/blogapi/coverage
+
+# production
+react/blogapi/build
+
+# misc
+django/.env
+react/blogapi/.DS_Store
+react/blogapi/.env.local
+react/blogapi/.env.development.local
+react/blogapi/.env.test.local
+react/blogapi/.env.production.local
+
+react/blogapi/npm-debug.log*
+react/blogapi/yarn-debug.log*
+react/blogapi/yarn-error.log*
+
+#database
+/postgres_data

@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    container_name: postgresql_db
+
+  backend:
+    build:
+      context: ./django
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django:/django
+    restart: always
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./react/blogapi
+    volumes:
+      - react_build:/react/build
+    depends_on:
+      - db
+      - backend
+  nginx:
+    container_name: my_nginx_server
+    image: nginx:latest
+    ports:
+      - 80:8080
+    restart: always
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d:ro
+      - react_build:/var/www/react
+    depends_on:
+      - db
+      - backend
+      - frontend
+
+volumes:
+
+  react_build:
+  postgres_data:
